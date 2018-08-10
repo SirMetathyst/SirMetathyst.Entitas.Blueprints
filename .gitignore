@@ -1,0 +1,9 @@
+/obj
+/Library
+/Build
+/Temp
+/.vs
+/.vscode
+*.userproperties
+*.csproj
+*.sln
