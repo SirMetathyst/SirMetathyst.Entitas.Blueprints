@@ -3,7 +3,7 @@ using Entitas;
 
 namespace SirMetathyst.Entitas.Blueprints
 {
-    public class BlueprintBuilder : IBlueprintBuilder
+    public class BlueprintBuilder
     {
         static BlueprintBuilder _Instance;
 
@@ -29,7 +29,7 @@ namespace SirMetathyst.Entitas.Blueprints
                 var t = allComponents[i].GetType ();
                 if (t.IsDefined (typeof (System.SerializableAttribute), false))
                 {
-                    components.Add (ComponentBlueprintBuilder.Instance.CreateComponentBlueprint (componentIndices[i], allComponents[i]));
+                    components.Add (new ComponentBlueprint (componentIndices[i], allComponents[i]));
                 }
             }
 

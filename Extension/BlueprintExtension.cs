@@ -4,8 +4,7 @@ namespace SirMetathyst.Entitas.Blueprints
 {
     public static class BlueprintExtension
     {
-        public static void ApplyBlueprint (this IEntity entity, Blueprint blueprint,
-            bool replaceComponents = false)
+        public static void ApplyBlueprint (this IEntity entity, Blueprint blueprint, bool replaceComponents = false)
         {
             var componentsLength = blueprint.components.Length;
             for (int i = 0; i < componentsLength; i++)
@@ -13,13 +12,12 @@ namespace SirMetathyst.Entitas.Blueprints
                 var componentBlueprint = blueprint.components[i];
                 if (replaceComponents)
                 {
-                    entity.ReplaceComponent (componentBlueprint.index,
-                        componentBlueprint.CreateComponent (entity));
+                    entity.ReplaceComponent (componentBlueprint.index, (IComponent) componentBlueprint.value);
+
                 }
                 else
                 {
-                    entity.AddComponent (componentBlueprint.index,
-                        componentBlueprint.CreateComponent (entity));
+                    entity.AddComponent (componentBlueprint.index, (IComponent) componentBlueprint.value);
                 }
             }
         }

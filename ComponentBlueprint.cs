@@ -7,14 +7,13 @@ namespace SirMetathyst.Entitas.Blueprints
     public class ComponentBlueprint
     {
         public int index;
-        public string type;
-        public SerializableMember[] members;
+        public object value;
+
         public ComponentBlueprint () { }
-        public ComponentBlueprint (string type, int index, SerializableMember[] members)
+        public ComponentBlueprint (int index, object value)
         {
-            this.type = type;
             this.index = index;
-            this.members = members;
+            this.value = value;
         }
     }
 }

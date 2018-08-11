@@ -9,9 +9,10 @@ using UnityEngine;
 
 namespace SirMetathyst.Entitas.Blueprints.Unity.Editor
 {
-    [CustomEditor (typeof (BlueprintScriptableObject))]
+    [CustomEditor (typeof (BlueprintScriptableObject), true)]
     public class BlueprintScriptableObjectInspector : UnityEditor.Editor
     {
+        /* 
         [DidReloadScripts, MenuItem ("Tools/Entitas/Blueprints/Update all Blueprints", false, 300)]
         public static void UpdateAllBlueprints ()
         {
@@ -31,7 +32,7 @@ namespace SirMetathyst.Entitas.Blueprints.Unity.Editor
                     UpdateBlueprintLayout (Blueprint, allContexts, allContextNames);
                 }
             }
-        }
+        }*/
 
         static IList<IContext> GetContextList ()
         {
@@ -70,7 +71,7 @@ namespace SirMetathyst.Entitas.Blueprints.Unity.Editor
 
             _allContextNames = _allContexts.Select (context => context.contextInfo.name).ToArray ();
 
-            UpdateBlueprintLayout ();
+            //UpdateBlueprintLayout ();
 
             var _blueprint = BlueprintScriptableObject.GetBlueprint ();
             string bpcontext = "";
@@ -139,7 +140,7 @@ namespace SirMetathyst.Entitas.Blueprints.Unity.Editor
             if (changed || previousName != BlueprintScriptableObject.name)
             {
                 previousName = BlueprintScriptableObject.name;
-                UpdateBlueprintLayout ();
+                //UpdateBlueprintLayout ();
                 UpdateBlueprint ();
                 EditorUtility.SetDirty (BlueprintScriptableObject);
             }
@@ -156,53 +157,54 @@ namespace SirMetathyst.Entitas.Blueprints.Unity.Editor
             BlueprintScriptableObject.SetBlueprint (NewBlueprint);
         }
 
-        public void UpdateBlueprintLayout ()
-        {
-            var BlueprintScriptableObject = ((BlueprintScriptableObject) target);
-            UpdateBlueprintLayout (BlueprintScriptableObject, _allContexts, _allContextNames);
-        }
-
-        public static void UpdateBlueprintLayout (BlueprintScriptableObject Blueprint, IList<IContext> ContextList, IList<string> ContextNameList)
-        {
-            var blueprint = Blueprint.GetBlueprint ();
-            if (blueprint == null)
-                return;
-
-            var needsUpdate = false;
-
-            var contextIndex = ContextNameList.IndexOf (blueprint.context);
-            if (contextIndex < 0)
-            {
-                contextIndex = 0;
-                needsUpdate = true;
-            }
-
-            var context = ContextList[contextIndex];
-            blueprint.context = context.contextInfo.name;
-
-            foreach (var component in blueprint.components)
-            {
-                var type = component.type.ToType ();
-                var index = Array.IndexOf (context.contextInfo.componentTypes, type);
-
-                if (index != component.index)
+        /* 
+                public void UpdateBlueprintLayout ()
                 {
-                    Debug.Log (string.Format (
-                        "Blueprint '{0}' has invalid or outdated component index for '{1}'. Index was {2} but should be {3}. Updated index.",
-                        blueprint.name, component.type, component.index, index));
-
-                    component.index = index;
-                    needsUpdate = true;
+                    var BlueprintScriptableObject = ((BlueprintScriptableObject) target);
+                    UpdateBlueprintLayout (BlueprintScriptableObject, _allContexts, _allContextNames);
                 }
-            }
 
-            if (needsUpdate)
-            {
-                Debug.Log ("Updating Blueprint '" + blueprint.name + "'");
-                Blueprint.SetBlueprint (blueprint);
-                EditorUtility.SetDirty (Blueprint);
-            }
-        }
+                public static void UpdateBlueprintLayout (BlueprintScriptableObject Blueprint, IList<IContext> ContextList, IList<string> ContextNameList)
+                {
+                    var blueprint = Blueprint.GetBlueprint ();
+                    if (blueprint == null)
+                        return;
+
+                    var needsUpdate = false;
+
+                    var contextIndex = ContextNameList.IndexOf (blueprint.context);
+                    if (contextIndex < 0)
+                    {
+                        contextIndex = 0;
+                        needsUpdate = true;
+                    }
+
+                    var context = ContextList[contextIndex];
+                    blueprint.context = context.contextInfo.name;
+
+                    foreach (var component in blueprint.components)
+                    {
+                        var type = component.value.GetType ();
+                        var index = Array.IndexOf (context.contextInfo.componentTypes, type);
+
+                        if (index != component.index)
+                        {
+                            Debug.Log (string.Format (
+                                "Blueprint '{0}' has invalid or outdated component index for '{1}'. Index was {2} but should be {3}. Updated index.",
+                                blueprint.name, component.value.GetType (), component.index, index));
+
+                            component.index = index;
+                            needsUpdate = true;
+                        }
+                    }
+
+                    if (needsUpdate)
+                    {
+                        Debug.Log ("Updating Blueprint '" + blueprint.name + "'");
+                        Blueprint.SetBlueprint (blueprint);
+                        EditorUtility.SetDirty (Blueprint);
+                    }
+                }*/
 
         void SwitchToContext (int Index)
         {
